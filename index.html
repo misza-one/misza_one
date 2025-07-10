@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISZA.ONE - Elite Hacker Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(45deg, #0a0015, #1a0033, #2d1b69, #512da8);
+            color: #e1bee7;
+            font-family: 'Orbitron', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Animated starfield background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* Scanlines effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                transparent 50%, 
+                rgba(139, 69, 196, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            animation: scan 0.1s linear infinite;
+            z-index: 2;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+        
+        /* Main container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+        }
+        
+        /* Header Section */
+        .header-section {
+            margin-bottom: 40px;
+        }
+        
+        /* Glitch border effect */
+        .main-box {
+            border: 2px solid #9c27b0;
+            padding: 40px;
+            background: rgba(26, 0, 51, 0.8);
+            box-shadow: 
+                0 0 20px #9c27b0,
+                inset 0 0 20px rgba(156, 39, 176, 0.1);
+            position: relative;
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        .main-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #9c27b0, #e1bee7, #673ab7, #9c27b0);
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+            border-radius: 12px;
+        }
+        
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* Title styling */
+        .title {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 
+                0 0 10px #9c27b0,
+                0 0 20px #9c27b0,
+                0 0 40px #9c27b0;
+            margin-bottom: 20px;
+            animation: pulse 2s ease-in-out infinite alternate;
+            letter-spacing: 3px;
+        }
+        
+        @keyframes pulse {
+            0% { text-shadow: 0 0 10px #9c27b0, 0 0 20px #9c27b0, 0 0 40px #9c27b0; }
+            100% { text-shadow: 0 0 20px #9c27b0, 0 0 30px #9c27b0, 0 0 60px #9c27b0; }
+        }
+        
+        /* Subtitle */
+        .subtitle {
+            font-size: 1.2rem;
+            color: #e1bee7;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* Social Media Section */
+        .social-section {
+            margin: 30px 0;
+        }
+        
+        .social-title {
+            font-size: 1.5rem;
+            color: #9c27b0;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            background: rgba(156, 39, 176, 0.1);
+            border: 2px solid #9c27b0;
+            border-radius: 8px;
+            color: #e1bee7;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-link:hover {
+            background: rgba(156, 39, 176, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+            color: #fff;
+        }
+        
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .social-link:hover::before {
+            left: 100%;
+        }
+        
+        .social-icon {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        /* Terminal Game Styles */
+        .terminal-game {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(10, 0, 21, 0.9);
+            border: 2px solid #9c27b0;
+            border-radius: 8px;
+            margin: 20px auto;
+            font-family: 'Courier New', monospace;
+            box-shadow: 
+                0 0 20px rgba(156, 39, 176, 0.5),
+                inset 0 0 20px rgba(156, 39, 176, 0.1);
+        }
+        
+        .terminal-header {
+            background: linear-gradient(90deg, #4a148c, #7b1fa2);
+            color: #e1bee7;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-bottom: 1px solid #9c27b0;
+            text-align: center;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .terminal-output {
+            height: 200px;
+            overflow-y: auto;
+            padding: 15px;
+            color: #e1bee7;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .terminal-line {
+            margin-bottom: 5px;
+            text-shadow: 0 0 5px #e1bee7;
+        }
+        
+        .terminal-input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-top: 1px solid #9c27b0;
+            background: rgba(74, 20, 140, 0.3);
+            border-radius: 0 0 6px 6px;
+        }
+        
+        .terminal-prompt {
+            color: #9c27b0;
+            font-weight: bold;
+            margin-right: 5px;
+            text-shadow: 0 0 5px #9c27b0;
+        }
+        
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #e1bee7;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            outline: none;
+            text-shadow: 0 0 5px #e1bee7;
+        }
+        
+        .terminal-input::placeholder {
+            color: rgba(225, 190, 231, 0.5);
+        }
+        
+        .cursor-blink {
+            color: #e1bee7;
+            animation: blink 1s step-end infinite;
+            margin-left: 2px;
+        }
+        
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .error-text {
+            color: #f06292 !important;
+            text-shadow: 0 0 5px #f06292 !important;
+        }
+        
+        .success-text {
+            color: #81c784 !important;
+            text-shadow: 0 0 5px #81c784 !important;
+        }
+        
+        .warning-text {
+            color: #ffb74d !important;
+            text-shadow: 0 0 5px #ffb74d !important;
+        }
+        
+        /* Twitch Embed Styles */
+        .twitch-embed {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(10, 0, 21, 0.9);
+            border: 2px solid #9c27b0;
+            border-radius: 8px;
+            margin: 20px auto;
+            font-family: 'Courier New', monospace;
+            box-shadow: 
+                0 0 20px rgba(156, 39, 176, 0.5),
+                inset 0 0 20px rgba(156, 39, 176, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .twitch-embed-header {
+            background: linear-gradient(90deg, #4a148c, #7b1fa2);
+            color: #e1bee7;
+            padding: 10px 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border-bottom: 2px solid #9c27b0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .twitch-embed-close {
+            background: none;
+            border: none;
+            color: #e1bee7;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+        
+        .twitch-embed-close:hover {
+            color: #f06292;
+        }
+        
+        .twitch-loading {
+            padding: 40px 20px;
+            text-align: center;
+            color: #9c27b0;
+        }
+        
+        .loading-text {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px #9c27b0;
+        }
+        
+        .loading-bar {
+            width: 80%;
+            height: 6px;
+            background: rgba(156, 39, 176, 0.2);
+            border-radius: 3px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #9c27b0, #e1bee7);
+            width: 0%;
+            animation: loadingProgress 2s ease-in-out;
+            box-shadow: 0 0 10px rgba(156, 39, 176, 0.8);
+        }
+        
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            font-size: 0.8rem;
+            color: #7b1fa2;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            .main-box {
+                padding: 20px;
+                margin: 10px;
+            }
+            .social-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                gap: 10px;
+            }
+            .social-link {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2rem;
+            }
+            .social-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated starfield -->
+    <div class="stars" id="stars"></div>
+    
+    <!-- Scanlines effect -->
+    <div class="scanlines"></div>
+    
+    <div class="container">
+        <div class="main-box">
+            <!-- Header Section -->
+            <div class="header-section">
+                <h1 class="title">MISZA.ONE</h1>
+                <p class="subtitle">[ ELITE HACKER HUB ]</p>
+            </div>
+            
+            <!-- Social Media Section -->
+            <div class="social-section">
+                <h2 class="social-title">CONNECT WITH ME</h2>
+                <div class="social-grid">
+                    <a href="https://github.com/misza" class="social-link" target="_blank">
+                        <span class="social-icon">⚡</span>
+                        GITHUB
+                    </a>
+                    <a href="https://youtube.com/@misza" class="social-link" target="_blank">
+                        <span class="social-icon">📺</span>
+                        YOUTUBE
+                    </a>
+                    <a href="https://x.com/misza" class="social-link" target="_blank">
+                        <span class="social-icon">𝕏</span>
+                        X
+                    </a>
+                    <a href="https://twitch.tv/misza" class="social-link" target="_blank">
+                        <span class="social-icon">🎮</span>
+                        TWITCH
+                    </a>
+                    <a href="https://discord.gg/misza" class="social-link" target="_blank">
+                        <span class="social-icon">💬</span>
+                        DISCORD
+                    </a>
+                    <a href="https://instagram.com/misza" class="social-link" target="_blank">
+                        <span class="social-icon">📸</span>
+                        INSTAGRAM
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Interactive Terminal Game -->
+            <div class="terminal-game">
+                <div class="terminal-header">
+                    [ HACKER TERMINAL v2.0 ] - TYPE 'help' FOR COMMANDS
+                </div>
+                <div class="terminal-output" id="terminal-output">
+                    <div class="terminal-line">MISZA.ONE SECURITY SYSTEM INITIALIZED...</div>
+                    <div class="terminal-line">ACCESS LEVEL: GUEST</div>
+                    <div class="terminal-line">TYPE COMMANDS TO INTERACT WITH THE SYSTEM</div>
+                    <div class="terminal-line">></div>
+                </div>
+                <div class="terminal-input-container">
+                    <span class="terminal-prompt">root@misza:~$ </span>
+                    <input type="text" class="terminal-input" id="terminal-input" placeholder="Enter command..." autocomplete="off">
+                    <span class="cursor-blink">_</span>
+                </div>
+            </div>
+            
+            <div class="footer">
+                [ KEYGEN STYLE INTERFACE v2.0 ] - CODED BY ELITE CREW<br>
+                Thanks for visiting MISZA.ONE <span class="blink">_</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let terminalOutput;
+        let terminalInput;
+        let accessLevel = 'guest';
+        let systemStatus = 'online';
+
+        // Initialize everything when page loads
+        window.addEventListener('load', function() {
+            console.log('Page loaded, initializing...');
+            initializeAll();
+        });
+
+        function initializeAll() {
+            // Get DOM elements
+            terminalOutput = document.getElementById('terminal-output');
+            terminalInput = document.getElementById('terminal-input');
+            
+            console.log('Elements found:', {terminalOutput, terminalInput});
+            
+            // Initialize visual effects
+            createStars();
+            glitchText();
+            
+            // Setup terminal
+            setupTerminal();
+        }
+
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numStars = 100;
+            
+            for (let i = 0; i < numStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                star.style.animationDuration = (Math.random() * 3 + 1) + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        function glitchText() {
+            const chars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`';
+            const titleElement = document.querySelector('.title');
+            const originalText = 'MISZA.ONE';
+            
+            setInterval(() => {
+                if (Math.random() < 0.1) {
+                    const randomChar = chars[Math.floor(Math.random() * chars.length)];
+                    const randomPos = Math.floor(Math.random() * originalText.length);
+                    const glitchedText = originalText.substring(0, randomPos) + randomChar + originalText.substring(randomPos + 1);
+                    titleElement.textContent = glitchedText;
+                    
+                    setTimeout(() => {
+                        titleElement.textContent = originalText;
+                    }, 50);
+                }
+            }, 200);
+        }
+
+        function setupTerminal() {
+            if (!terminalInput || !terminalOutput) {
+                console.error('Terminal elements not found!');
+                return;
+            }
+            
+            terminalInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const command = this.value.toLowerCase().trim();
+                    console.log('Command entered:', command);
+                    processCommand(command, this.value);
+                    this.value = '';
+                }
+            });
+            
+            terminalInput.focus();
+            console.log('Terminal setup complete');
+        }
+
+        function addTerminalLine(text, className = '') {
+            if (!terminalOutput) return;
+            const line = document.createElement('div');
+            line.className = `terminal-line ${className}`;
+            line.textContent = text;
+            terminalOutput.appendChild(line);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        function processCommand(command, originalInput) {
+            addTerminalLine(`root@misza:~$ ${originalInput}`);
+            
+            console.log('Processing:', command);
+            
+            // Simple command processing
+            if (command === 'help') {
+                addTerminalLine('Available commands:');
+                addTerminalLine('  help     - Show this help menu');
+                addTerminalLine('  test     - Test command');
+                addTerminalLine('  tweets   - Show latest tweets');
+                addTerminalLine('  twitch   - Open Twitch stream');
+                addTerminalLine('  coffee   - Make virtual coffee');
+                addTerminalLine('  clear    - Clear terminal');
+            } else if (command === 'test') {
+                addTerminalLine('✅ Test command works! All systems operational.', 'success-text');
+            } else if (command === 'tweets') {
+                addTerminalLine('Fetching latest tweets from X...', 'warning-text');
+                setTimeout(() => {
+                    addTerminalLine('✓ Connected to X successfully', 'success-text');
+                    addTerminalLine('=== LATEST TWEETS ===', 'success-text');
+                    addTerminalLine('[2h ago] Just shipped a new feature! 🚀 Working on some sick retro UI effects');
+                    addTerminalLine('♥ 42 likes', 'warning-text');
+                    addTerminalLine('[5h ago] Coffee + Code + Purple themes = Perfect morning ☕');
+                    addTerminalLine('♥ 23 likes', 'warning-text');
+                }, 1000);
+            } else if (command === 'twitch') {
+                addTerminalLine('Loading Twitch stream...', 'warning-text');
+                openTwitchEmbed();
+            } else if (command === 'coffee') {
+                addTerminalLine('Brewing virtual coffee...');
+                setTimeout(() => addTerminalLine('☕ *BEEP BEEP* ☕'), 500);
+                setTimeout(() => addTerminalLine('Your coffee is ready!', 'success-text'), 1000);
+            } else if (command === 'clear') {
+                setTimeout(() => {
+                    terminalOutput.innerHTML = '<div class="terminal-line">Terminal cleared</div><div class="terminal-line">></div>';
+                }, 100);
+            } else if (command === '') {
+                // Do nothing for empty command
+            } else {
+                addTerminalLine(`Command not found: ${command}`, 'error-text');
+                addTerminalLine('Type "help" for available commands');
+            }
+        }
+
+        function openTwitchEmbed() {
+            const existingEmbed = document.querySelector('.twitch-embed');
+            if (existingEmbed) {
+                addTerminalLine('Twitch stream already open!', 'warning-text');
+                return;
+            }
+            
+            const twitchEmbed = document.createElement('div');
+            twitchEmbed.className = 'twitch-embed';
+            twitchEmbed.innerHTML = `
+                <div class="twitch-embed-header">
+                    <span>📺 MISZA.ONE LIVE STREAM - RETRO MODE ACTIVATED</span>
+                    <button class="twitch-embed-close" onclick="closeTwitchEmbed()">×</button>
+                </div>
+                <div class="twitch-loading">
+                    <div class="loading-text">LOADING STREAM...</div>
+                    <div class="loading-bar">
+                        <div class="loading-progress"></div>
+                    </div>
+                </div>
+            `;
+            
+            const terminalGame = document.querySelector('.terminal-game');
+            terminalGame.parentNode.insertBefore(twitchEmbed, terminalGame.nextSibling);
+            
+            setTimeout(() => {
+                twitchEmbed.style.opacity = '1';
+                twitchEmbed.style.transform = 'translateY(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                const iframe = document.createElement('iframe');
+                iframe.src = 'https://player.twitch.tv/?channel=misza_one&parent=localhost&parent=127.0.0.1&parent=misza.one&autoplay=false';
+                iframe.width = '100%';
+                iframe.height = '400';
+                iframe.frameBorder = '0';
+                iframe.allowFullscreen = true;
+                iframe.style.borderRadius = '0 0 8px 8px';
+                
+                twitchEmbed.innerHTML = `
+                    <div class="twitch-embed-header">
+                        <span>📺 MISZA.ONE LIVE STREAM - RETRO MODE ACTIVATED</span>
+                        <button class="twitch-embed-close" onclick="closeTwitchEmbed()">×</button>
+                    </div>
+                `;
+                twitchEmbed.appendChild(iframe);
+                
+                addTerminalLine('✓ Twitch stream loaded successfully!', 'success-text');
+                addTerminalLine('Stream embedded below. Click X to close.', 'warning-text');
+            }, 2000);
+        }
+
+        function closeTwitchEmbed() {
+            const twitchEmbed = document.querySelector('.twitch-embed');
+            if (twitchEmbed) {
+                twitchEmbed.style.transform = 'translateY(20px)';
+                twitchEmbed.style.opacity = '0';
+                setTimeout(() => {
+                    twitchEmbed.remove();
+                    addTerminalLine('Twitch stream closed.', 'warning-text');
+                }, 300);
+            }
+        }
+
+        // Add some console messages for authenticity
+        console.log('%c[SYSTEM] MISZA.ONE landing page initialized...', 'color: #9c27b0; font-family: monospace;');
+        console.log('%c[INFO] Elite hacker hub loaded successfully', 'color: #e1bee7; font-family: monospace;');
+        console.log('%c[STATUS] All systems operational', 'color: #81c784; font-family: monospace;');
+    </script>
+</body>
+</html>
