@@ -149,13 +149,13 @@
         
         /* Social Media Section */
         .social-section {
-            margin: 30px 0;
+            margin: 20px 0;
         }
         
         .social-title {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: #9c27b0;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -163,22 +163,23 @@
         
         .social-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
         }
         
         .social-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px 20px;
+            padding: 10px 15px;
             background: rgba(156, 39, 176, 0.1);
             border: 2px solid #9c27b0;
-            border-radius: 8px;
+            border-radius: 6px;
             color: #e1bee7;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.8rem;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
@@ -187,7 +188,7 @@
         .social-link:hover {
             background: rgba(156, 39, 176, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(156, 39, 176, 0.4);
+            box-shadow: 0 3px 10px rgba(156, 39, 176, 0.4);
             color: #fff;
         }
         
@@ -207,14 +208,14 @@
         }
         
         .social-icon {
-            margin-right: 8px;
-            font-size: 1.2rem;
+            margin-right: 6px;
+            font-size: 1rem;
         }
         
         /* Terminal Game Styles */
         .terminal-game {
             width: 100%;
-            max-width: 600px;
+            max-width: 800px;
             background: rgba(10, 0, 21, 0.9);
             border: 2px solid #9c27b0;
             border-radius: 8px;
@@ -223,6 +224,9 @@
             box-shadow: 
                 0 0 20px rgba(156, 39, 176, 0.5),
                 inset 0 0 20px rgba(156, 39, 176, 0.1);
+            position: relative;
+            resize: vertical;
+            overflow: hidden;
         }
         
         .terminal-header {
@@ -237,12 +241,30 @@
         }
         
         .terminal-output {
-            height: 200px;
+            height: 300px;
             overflow-y: auto;
             padding: 15px;
             color: #e1bee7;
             font-size: 0.9rem;
             line-height: 1.4;
+            resize: vertical;
+            min-height: 200px;
+            max-height: 600px;
+        }
+        
+        .terminal-resize-handle {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, transparent 40%, #9c27b0 45%, transparent 50%);
+            cursor: nw-resize;
+            border-radius: 0 0 6px 0;
+        }
+        
+        .terminal-resize-handle:hover {
+            background: linear-gradient(135deg, transparent 40%, #e1bee7 45%, transparent 50%);
         }
         
         .terminal-line {
@@ -392,10 +414,11 @@
         
         /* Footer */
         .footer {
-            margin-top: 40px;
+            margin-top: 20px;
             font-size: 0.8rem;
             color: #7b1fa2;
             font-family: 'Courier New', monospace;
+            text-align: center;
         }
         
         /* Responsive */
@@ -408,12 +431,18 @@
                 margin: 10px;
             }
             .social-grid {
-                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-                gap: 10px;
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 8px;
             }
             .social-link {
-                padding: 12px 15px;
-                font-size: 0.9rem;
+                padding: 8px 12px;
+                font-size: 0.7rem;
+            }
+            .terminal-game {
+                max-width: 95%;
+            }
+            .terminal-output {
+                height: 250px;
             }
         }
         
@@ -439,10 +468,29 @@
             <!-- Header Section -->
             <div class="header-section">
                 <h1 class="title">MISZA.ONE</h1>
-                <p class="subtitle">[ ELITE HACKER HUB ]</p>
+                <p class="subtitle">[ WELCOME TO MISZA.ONE ]</p>
             </div>
             
-            <!-- Social Media Section -->
+            <!-- Interactive Terminal Game -->
+            <div class="terminal-game">
+                <div class="terminal-header">
+                    [ HACKER TERMINAL v2.0 ] - TYPE 'help' FOR COMMANDS
+                </div>
+                <div class="terminal-output" id="terminal-output">
+                    <div class="terminal-line">MISZA.ONE SECURITY SYSTEM INITIALIZED...</div>
+                    <div class="terminal-line">ACCESS LEVEL: GUEST</div>
+                    <div class="terminal-line">TYPE COMMANDS TO INTERACT WITH THE SYSTEM</div>
+                    <div class="terminal-line">></div>
+                </div>
+                <div class="terminal-input-container">
+                    <span class="terminal-prompt">root@misza:~$ </span>
+                    <input type="text" class="terminal-input" id="terminal-input" placeholder="Enter command..." autocomplete="off">
+                    <span class="cursor-blink">_</span>
+                </div>
+                <div class="terminal-resize-handle"></div>
+            </div>
+            
+            <!-- Social Media Section - moved below terminal -->
             <div class="social-section">
                 <h2 class="social-title">CONNECT WITH ME</h2>
                 <div class="social-grid">
@@ -473,26 +521,7 @@
                 </div>
             </div>
             
-            <!-- Interactive Terminal Game -->
-            <div class="terminal-game">
-                <div class="terminal-header">
-                    [ HACKER TERMINAL v2.0 ] - TYPE 'help' FOR COMMANDS
-                </div>
-                <div class="terminal-output" id="terminal-output">
-                    <div class="terminal-line">MISZA.ONE SECURITY SYSTEM INITIALIZED...</div>
-                    <div class="terminal-line">ACCESS LEVEL: GUEST</div>
-                    <div class="terminal-line">TYPE COMMANDS TO INTERACT WITH THE SYSTEM</div>
-                    <div class="terminal-line">></div>
-                </div>
-                <div class="terminal-input-container">
-                    <span class="terminal-prompt">root@misza:~$ </span>
-                    <input type="text" class="terminal-input" id="terminal-input" placeholder="Enter command..." autocomplete="off">
-                    <span class="cursor-blink">_</span>
-                </div>
-            </div>
-            
             <div class="footer">
-                [ KEYGEN STYLE INTERFACE v2.0 ] - CODED BY ELITE CREW<br>
                 Thanks for visiting MISZA.ONE <span class="blink">_</span>
             </div>
         </div>
@@ -560,6 +589,99 @@
                     }, 50);
                 }
             }, 200);
+        }
+
+        // Claude AI integration - moved to global scope
+        async function askClaude(question) {
+            console.log('askClaude function called with:', question);
+            addTerminalLine(`🤖 Claude: Processing "${question}"...`, 'warning-text');
+            
+            try {
+                // Check if Claude API is available
+                console.log('Checking Claude API availability...');
+                console.log('window.claude exists:', typeof window.claude !== 'undefined');
+                console.log('window.claude.complete exists:', typeof window.claude?.complete === 'function');
+                
+                if (typeof window.claude === 'undefined' || typeof window.claude.complete !== 'function') {
+                    addTerminalLine('❌ Claude API not available in this environment', 'error-text');
+                    addTerminalLine('💡 This feature works in Claude artifacts environment', 'warning-text');
+                    // Show a demo response instead
+                    setTimeout(() => {
+                        addTerminalLine('🤖 Demo Claude: Great question!', 'success-text');
+                        addTerminalLine('I\'m Claude, an AI assistant by Anthropic.', 'success-text');
+                        addTerminalLine('My model is Claude 3, and I love helping with coding!', 'success-text');
+                    }, 1000);
+                    return;
+                }
+                
+                addTerminalLine('🧠 Claude is thinking...', '');
+                
+                // Craft a prompt for Claude
+                const prompt = `You are Claude AI integrated into a retro 2000s keygen-style terminal interface. 
+                The user asked: "${question}"
+                
+                Respond in a helpful, concise way that fits the retro hacker aesthetic. 
+                Keep your response under 3-4 sentences and make it engaging.
+                You can use some retro slang or references if appropriate.
+                
+                Your entire response must be a single, valid JSON object in this format:
+                {
+                  "response": "Your helpful response here",
+                  "mood": "brief description of your response mood (helpful/playful/technical/etc)"
+                }
+                
+                DO NOT include any text outside the JSON structure.`;
+                
+                console.log('Calling Claude API...');
+                // Call Claude API
+                const claudeResponse = await window.claude.complete(prompt);
+                console.log('Claude API response:', claudeResponse);
+                
+                // Parse the response
+                let parsedResponse;
+                try {
+                    parsedResponse = JSON.parse(claudeResponse);
+                } catch (parseError) {
+                    console.error('JSON parsing error:', parseError);
+                    // Fallback if JSON parsing fails
+                    addTerminalLine('🤖 Claude: ' + claudeResponse.substring(0, 200) + '...', 'success-text');
+                    return;
+                }
+                
+                // Display Claude's response with retro styling
+                setTimeout(() => {
+                    addTerminalLine('', ''); // Empty line
+                    addTerminalLine('🤖 CLAUDE AI RESPONSE:', 'success-text');
+                    addTerminalLine('═══════════════════════', 'success-text');
+                    
+                    // Split response into lines for better terminal display
+                    const responseLines = parsedResponse.response.match(/.{1,60}(\s|$)/g) || [parsedResponse.response];
+                    responseLines.forEach((line, index) => {
+                        setTimeout(() => {
+                            addTerminalLine(line.trim(), '');
+                        }, index * 300);
+                    });
+                    
+                    setTimeout(() => {
+                        addTerminalLine('═══════════════════════', 'success-text');
+                        addTerminalLine(`Mood: ${parsedResponse.mood || 'helpful'} | Ask another question anytime!`, 'warning-text');
+                        addTerminalLine('', ''); // Empty line
+                    }, responseLines.length * 300 + 200);
+                    
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Claude API error:', error);
+                addTerminalLine('❌ Failed to connect to Claude', 'error-text');
+                addTerminalLine('🔧 Error: ' + error.message, 'error-text');
+                
+                // Provide a fallback response
+                setTimeout(() => {
+                    addTerminalLine('🤖 Offline Claude: That\'s a great question!', 'warning-text');
+                    addTerminalLine('Unfortunately, I can\'t process it right now.', 'warning-text');
+                    addTerminalLine('Try asking something simpler or check back later.', 'warning-text');
+                }, 500);
+            }
         }
 
         function setupTerminal() {
