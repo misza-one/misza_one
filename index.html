@@ -617,8 +617,135 @@
                     addTerminalLine('♥ 23 likes', 'warning-text');
                 }, 1000);
             } else if (command === 'twitch') {
-                addTerminalLine('Opening Twitch interface...', 'warning-text');
-                openTwitchInterface();
+                addTerminalLine('Loading Twitch stream embed...', 'warning-text');
+                
+                const existingEmbed = document.querySelector('.twitch-embed-container');
+                if (existingEmbed) {
+                    addTerminalLine('Twitch embed already open!', 'warning-text');
+                } else {
+                    // Create embed container
+                    const embedContainer = document.createElement('div');
+                    embedContainer.className = 'twitch-embed-container';
+                    embedContainer.innerHTML = `
+                        <div style="width: 100%; max-width: 600px; background: rgba(10, 0, 21, 0.9); border: 2px solid #9c27b0; 
+                                   border-radius: 8px; margin: 20px auto; font-family: 'Courier New', monospace; 
+                                   box-shadow: 0 0 20px rgba(156, 39, 176, 0.5);">
+                            <div style="background: linear-gradient(90deg, #4a148c, #7b1fa2); color: #e1bee7; padding: 10px 15px; 
+                                       font-weight: bold; border-bottom: 2px solid #9c27b0; display: flex; justify-content: space-between; 
+                                       align-items: center; border-radius: 6px 6px 0 0;">
+                                <span>📺 MISZA.ONE LIVE STREAM - EMBEDDED</span>
+                                <button onclick="this.closest('.twitch-embed-container').remove(); addTerminalLine('Twitch embed closed.', 'warning-text');" 
+                                        style="background: none; border: none; color: #e1bee7; font-size: 1.5rem; cursor: pointer;">×</button>
+                            </div>
+                            <div style="padding: 20px; background: linear-gradient(45deg, #4a148c, #7b1fa2); border-radius: 0 0 6px 6px;">
+                                <div id="twitch-embed-player" style="width: 100%; height: 400px; border-radius: 6px; overflow: hidden;"></div>
+                                <div style="margin-top: 15px; text-align: center; color: #e1bee7; font-size: 0.9rem;">
+                                    <span id="embed-status">Attempting Twitch embed...</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    const terminalGame = document.querySelector('.terminal-game');
+                    if (terminalGame && terminalGame.parentNode) {
+                        terminalGame.parentNode.insertBefore(embedContainer, terminalGame.nextSibling);
+                        
+                        // Try iframe embed first (more reliable)
+                        setTimeout(() => {
+                            try {
+                                const currentHost = window.location.hostname || 'localhost';
+                                const playerContainer = document.getElementById('twitch-embed-player');
+                                const statusEl = document.getElementById('embed-status');
+                                
+                                if (playerContainer && statusEl) {
+                                    statusEl.textContent = 'Loading iframe embed...';
+                                    
+                                    // Create iframe embed with proper parent parameters
+                                    const iframe = document.createElement('iframe');
+                                    iframe.src = `https://player.twitch.tv/?channel=misza_one&parent=${currentHost}&autoplay=false&muted=false`;
+                                    iframe.width = '100%';
+                                    iframe.height = '400';
+                                    iframe.frameBorder = '0';
+                                    iframe.allowFullscreen = true;
+                                    iframe.style.borderRadius = '6px';
+                                    
+                                    // Handle iframe load success
+                                    iframe.onload = function() {
+                                        statusEl.textContent = '✓ Twitch stream embedded successfully!';
+                                        statusEl.style.color = '#81c784';
+                                        addTerminalLine('✓ Twitch iframe embed loaded!', 'success-text');
+                                        addTerminalLine('Stream embedded below.', 'warning-text');
+                                    };
+                                    
+                                    // Handle iframe load error
+                                    iframe.onerror = function() {
+                                        console.log('Iframe failed, trying alternative...');
+                                        tryAlternativeEmbed(playerContainer, statusEl);
+                                    };
+                                    
+                                    // Fallback for iframe blocking
+                                    setTimeout(() => {
+                                        if (statusEl.textContent.includes('Loading')) {
+                                            console.log('Iframe timeout, trying alternative...');
+                                            tryAlternativeEmbed(playerContainer, statusEl);
+                                        }
+                                    }, 5000);
+                                    
+                                    playerContainer.appendChild(iframe);
+                                }
+                                
+                            } catch (error) {
+                                console.error('Embed error:', error);
+                                const statusEl = document.getElementById('embed-status');
+                                if (statusEl) {
+                                    tryAlternativeEmbed(document.getElementById('twitch-embed-player'), statusEl);
+                                }
+                            }
+                        }, 500);
+                        
+                    } else {
+                        addTerminalLine('Error: Could not create embed container', 'error-text');
+                    }
+                }
+                
+                // Alternative embed function
+                function tryAlternativeEmbed(container, statusEl) {
+                    if (!container || !statusEl) return;
+                    
+                    statusEl.textContent = 'Iframe blocked, showing alternative...';
+                    
+                    container.innerHTML = `
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; 
+                                   height: 400px; background: rgba(0,0,0,0.3); border-radius: 6px; border: 2px dashed #9c27b0;">
+                            <div style="text-align: center; color: #e1bee7; padding: 20px;">
+                                <h3 style="color: #fff; margin-bottom: 15px;">🎮 MISZA_ONE LIVE STREAM</h3>
+                                <p style="margin-bottom: 20px;">Browser is blocking the embed, but you can watch directly!</p>
+                                
+                                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                                    <a href="https://twitch.tv/misza_one" target="_blank" 
+                                       style="display: inline-block; padding: 12px 20px; background: #9146ff; color: white; 
+                                              text-decoration: none; border-radius: 6px; font-weight: bold;">
+                                        🎬 Open Stream
+                                    </a>
+                                    <a href="https://twitch.tv/popout/misza_one/chat" target="_blank"
+                                       style="display: inline-block; padding: 12px 20px; background: #00d2ff; color: white; 
+                                              text-decoration: none; border-radius: 6px; font-weight: bold;">
+                                        💬 Open Chat
+                                    </a>
+                                </div>
+                                
+                                <p style="margin-top: 15px; font-size: 0.9rem; color: #9c27b0;">
+                                    Pro tip: Opening in a new tab gives you the full Twitch experience!
+                                </p>
+                            </div>
+                        </div>
+                    `;
+                    
+                    statusEl.textContent = '→ Direct links available above';
+                    statusEl.style.color = '#ffb74d';
+                    addTerminalLine('Embed blocked, showing direct links instead.', 'warning-text');
+                }
+                
             } else if (command === 'coffee') {
                 addTerminalLine('Brewing virtual coffee...');
                 setTimeout(() => addTerminalLine('☕ *BEEP BEEP* ☕'), 500);
@@ -699,7 +826,9 @@
             }
         }
 
-        // Add some console messages for authenticity
+        // Make functions globally accessible
+        window.openTwitchInterface = openTwitchInterface;
+        window.closeTwitchInterface = closeTwitchInterface;
         console.log('%c[SYSTEM] MISZA.ONE landing page initialized...', 'color: #9c27b0; font-family: monospace;');
         console.log('%c[INFO] Elite hacker hub loaded successfully', 'color: #e1bee7; font-family: monospace;');
         console.log('%c[STATUS] All systems operational', 'color: #81c784; font-family: monospace;');
